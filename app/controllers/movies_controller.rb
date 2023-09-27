@@ -8,8 +8,10 @@ class MoviesController < ApplicationController
 
   def index
     @all_ratings = Movie.all_ratings
-    puts params[:ratings]
-    @ratings_to_show = ['G']
+    @ratings_to_show = []
+    params[:ratings].each do |key, array|
+      @ratings_to_show << key
+    end
 
     @movies = Movie.all
   end
