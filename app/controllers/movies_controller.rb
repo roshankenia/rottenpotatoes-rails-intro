@@ -11,12 +11,18 @@ class MoviesController < ApplicationController
     @ratings_to_show = []
     if params[:ratings]
       params[:ratings].each do |key, array|
-        # @ratings_to_show << key
-        puts key
+        @ratings_to_show << key
       end
     end
 
-    @movies = Movie.all
+    #get movies
+    if @ratings_to_show == []
+      @movies = Movie.with_ratings(@all_ratings)
+    else
+      @movies = Movie.with_ratings(@ratings_to_show)
+    end
+
+    # @movies = Movie.all
   end
 
   def new
