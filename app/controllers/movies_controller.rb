@@ -9,8 +9,11 @@ class MoviesController < ApplicationController
   def index
     @all_ratings = Movie.all_ratings
     @ratings_to_show = []
-    params[:ratings].each do |key, array|
-      @ratings_to_show << key
+    if params[:ratings]
+      params[:ratings].each do |key, array|
+        # @ratings_to_show << key
+        puts key
+      end
     end
 
     @movies = Movie.all
