@@ -9,12 +9,26 @@ class MoviesController < ApplicationController
   def index
     puts '\n\nPRINTING PARAMS'
     puts params
+    if not params[:ratings]
+      if session[:ratings]
+        params[:ratings] = session[:ratings]
+      end
+    end
+
+    if not params[:sort]
+      if session[:sort]
+        params[:sort] = session[:sort]
+      end
+    end
+
     @all_ratings = Movie.all_ratings
     @ratings_to_show = []
     if params[:ratings]
       params[:ratings].each do |key, array|
         @ratings_to_show << key
       end
+
+      session[:ratings] = params[:ratings]
     end
 
     #get movies
@@ -24,19 +38,17 @@ class MoviesController < ApplicationController
       @movies = Movie.with_ratings(@ratings_to_show)
     end
 
-    session[:sort] = ''
-    if params[:sort]
-      session[:sort] = params[:sort]
-    end
     @title_color = ''
     @release_color = ''
-    if session[:sort]
+    if params[:sort]
       @movies = @movies.order(params[:sort])
       if params[:sort] == 'title'
         @title_color = 'hilite'
       elsif params[:sort] == 'release_date'
         @release_color = 'hilite'
       end
+
+      session[:sort] = params[:sort]
     end
 
     
